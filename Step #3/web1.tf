@@ -14,25 +14,18 @@ resource "digitalocean_droplet" "web1" {
     "${var.SSH_FINGERPRINT}",
   ]
 
-  #configure a connection to the server after its provisioned. SSH is the default
-  connection = {
-    user        = "root"
-    type        = "ssh"
-    private_key = "${file(var.PRIVATE_KEY_PATH)}"
-    timeout     = "2m"
+  connection {
+      user        = "root"
+      type        = "ssh"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+      timeout     = "2m"
+      host        = digitalocean_droplet.web1.ipv4_address
   }
 
-    provisioner "file" {
-    source      = "startup.sh"
-    destination = "startup.sh"
-    }
 
   #This  is executed when the server first starts and a successful connection is established
   provisioner "remote-exec" {
-    inline = [
-      "sudo chmod +x startup.sh",
-      "sudo ./startup.sh"
-    ]
+    script = "./startup.sh"
   }
 }
 #once complete, browse to the server on port 80 of its public IP address. You should see a text message there with the server name and IP

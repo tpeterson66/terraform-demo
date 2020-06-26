@@ -15,24 +15,17 @@ resource "digitalocean_droplet" "web2" {
   ]
 
   #configure a connection to the server after its provisioned. SSH is the default
-  connection = {
-    user        = "root"
-    type        = "ssh"
-    private_key = "${file(var.PRIVATE_KEY_PATH)}"
-    timeout     = "2m"
-  }
-
-  provisioner "file" {
-    source      = "startup.sh"
-    destination = "startup.sh"
+  connection {
+      user        = "root"
+      type        = "ssh"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+      timeout     = "2m"
+      host        = digitalocean_droplet.web2.ipv4_address
   }
 
   #This  is executed when the server first starts and a successful connection is established
   provisioner "remote-exec" {
-    inline = [
-      "sudo chmod +x startup.sh",
-      "sudo ./startup.sh",
-    ]
+    script = "./startup.sh"
   }
 }
 

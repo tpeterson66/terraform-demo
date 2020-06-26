@@ -16,13 +16,13 @@ variable "SSH_FINGERPRINT" {}
 #  to connect to the VPS after it is provisioned.
 variable "PRIVATE_KEY_PATH" {
     type = "string"
-    default = "~/.ssh/dokey"
+    default = "~/.ssh/id_rsa"
 }
 #  added the template file location and variables. This will be used in the haproxy resource to update 
 #  the configuration file before deploying it to the server.
 data "template_file" "haproxy" {
     template = "${file("./haproxy.tpl")}"
-    vars {
+    vars = {
       web1ip = "${digitalocean_droplet.web1.ipv4_address_private}"
       web2ip = "${digitalocean_droplet.web2.ipv4_address_private}"
       web3ip = "${digitalocean_droplet.web3.ipv4_address_private}"

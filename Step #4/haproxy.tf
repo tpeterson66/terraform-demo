@@ -9,11 +9,19 @@ resource "digitalocean_droplet" "proxy" {
     "${var.SSH_FINGERPRINT}",
   ]
 
-  connection = {
-    user        = "root"
-    type        = "ssh"
-    private_key = "${file(var.PRIVATE_KEY_PATH)}"
-    timeout     = "2m"
+  # connection = {
+  #   user        = "root"
+  #   type        = "ssh"
+  #   private_key = "${file(var.PRIVATE_KEY_PATH)}"
+  #   timeout     = "2m"
+  # }
+  
+    connection {
+      user        = "root"
+      type        = "ssh"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+      timeout     = "2m"
+      host        = digitalocean_droplet.proxy.ipv4_address
   }
 
   provisioner "remote-exec" {

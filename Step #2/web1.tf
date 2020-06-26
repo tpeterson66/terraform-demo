@@ -15,11 +15,12 @@ resource "digitalocean_droplet" "web1" {
   ]
 
   #configure a connection to the server after its provisioned. SSH is the default
-  connection = {
-    user        = "root"
-    type        = "ssh"
-    private_key = "${file(var.PRIVATE_KEY_PATH)}"
-    timeout     = "2m"
+  connection {
+      user        = "root"
+      type        = "ssh"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+      timeout     = "2m"
+      host        = digitalocean_droplet.web1.ipv4_address
   }
 
   #This  is executed when the server first starts and a successful connection is established

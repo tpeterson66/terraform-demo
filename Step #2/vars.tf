@@ -16,5 +16,5 @@ variable "SSH_FINGERPRINT" {}
 #  to connect to the VPS after it is provisioned.
 variable "PRIVATE_KEY_PATH" {
     type = "string"
-    default = "~/.ssh/dokey"
+    default = "~/.ssh/id_rsa"
 }
