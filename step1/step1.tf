@@ -31,7 +31,7 @@ resource "azurerm_subnet_network_security_group_association" "app" {
 resource "azurerm_network_security_rule" "http-in" {
   name                        = "http-in"
   priority                    = 100
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
@@ -44,7 +44,7 @@ resource "azurerm_network_security_rule" "http-in" {
 resource "azurerm_network_security_rule" "ssh-in" {
   name                        = "ssh-in"
   priority                    = 101
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
