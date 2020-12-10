@@ -1,1 +1,1 @@
-cp ~/terraform-demo/step1/* ~/terraform/demo/.
+cp ~/terraform-demo/step1/* ~/terraform-demo/.
