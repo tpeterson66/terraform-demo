@@ -48,20 +48,20 @@ resource "azurerm_linux_virtual_machine" "webvm" {
   }
 
   provisioner "file" {
-    source      = "startup.sh"
-    destination = "/tmp/startup.sh"
+    source      = "./startup.sh"
+    destination = "./startup.sh"
     connection {
       type     = "ssh"
       user     = "adminuser"
-      private_key = "${file("~/.ssh/id_rsa")}"
-      host     = azurerm_network_interface.nic[count.index].public_ip_address
+      private_key = file("~/.ssh/id_rsa")
+      host     = azurerm_public_ip.apppip[count.index].ip_address
     }
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/script.sh",
-      "/tmp/startup.sh",
+      "chmod +x ./startup.sh",
+      "./startup.sh",
     ]
   }
 }
