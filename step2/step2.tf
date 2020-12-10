@@ -54,7 +54,7 @@ resource "azurerm_linux_virtual_machine" "webvm" {
       type     = "ssh"
       user     = "adminuser"
       private_key = "${file("~/.ssh/id_rsa")}"
-      host     = self.azurerm_public_ip.apppip.ip_address
+      host     = azurerm_network_interface.nic[count.index].public_ip_address
     }
   }
 
