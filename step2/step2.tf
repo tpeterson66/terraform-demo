@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "apppip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = "${var.server_count}"
+  count               = var.server_count
   name                = "${var.name}${(count.index + 1)}-nic"
   location            = azurerm_resource_group.apprg.location
   resource_group_name = azurerm_resource_group.apprg.name
