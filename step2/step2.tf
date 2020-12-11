@@ -13,7 +13,7 @@ resource "azurerm_network_interface" "nic" {
   resource_group_name = azurerm_resource_group.apprg.name
 
   ip_configuration {
-    name                          = "ifconfig"
+    name                          = "ipconfig"
     subnet_id                     = azurerm_subnet.appsubnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.apppip[count.index].id
