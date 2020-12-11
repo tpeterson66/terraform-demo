@@ -1,12 +1,12 @@
 resource "azurerm_public_ip" "lb_pip" {
-  name                = "public-load-balancer"
+  name                = "tf-lb-pip"
   location            = azurerm_resource_group.apprg.location
   resource_group_name = azurerm_resource_group.apprg.name
   allocation_method   = "Static"
 }
 
-resource "azurerm_lb" "tf-lab-lb" {
-  name                = "TestLoadBalancer"
+resource "azurerm_lb" "tf_lab_lb" {
+  name                = "tf-lb"
   location            = azurerm_resource_group.apprg.location
   resource_group_name = azurerm_resource_group.apprg.name
 
@@ -18,18 +18,20 @@ resource "azurerm_lb" "tf-lab-lb" {
 
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
   resource_group_name = azurerm_resource_group.apprg.name
-  loadbalancer_id     = azurerm_lb.example.id
+  loadbalancer_id     = azurerm_lb.tf_lab_lb.id
   name                = "backend_pool"
 }
 
 resource "azurerm_lb_rule" "lb-rule" {
   resource_group_name            = azurerm_resource_group.apprg.name
-  loadbalancer_id                = azurerm_lb.tf-lab-lb.id
+  loadbalancer_id                = azurerm_lb.tf_lab_lb.id
   name                           = "rule-01"
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
-  frontend_ip_configuration_name = "PublicIPAddress"
+  frontend_ip_configuration_name = "lb-pip"
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.backend_pool.id
+  probe_id                       = azurerm_lb_probe.health_probe.id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "backend_pool" {
@@ -37,4 +39,10 @@ resource "azurerm_network_interface_backend_address_pool_association" "backend_p
   network_interface_id    = azurerm_network_interface.nic[count.index].id
   ip_configuration_name   = "ipconfig"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
+}
+resource "azurerm_lb_probe" "health_probe" {
+  resource_group_name = azurerm_resource_group.apprg.name
+  loadbalancer_id     = azurerm_lb.tf_lab_lb.id
+  name                = "http-running-probe"
+  port                = 80
 }
