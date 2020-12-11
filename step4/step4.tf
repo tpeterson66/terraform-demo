@@ -46,3 +46,6 @@ resource "azurerm_lb_probe" "health_probe" {
   name                = "http-running-probe"
   port                = 80
 }
+output "Load_Balencer_IP_Address" {
+  value = azurerm_public_ip.lb_pip.ip_address
+}
