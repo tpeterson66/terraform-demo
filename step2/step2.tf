@@ -26,6 +26,7 @@ resource "azurerm_linux_virtual_machine" "webvm" {
   location            = azurerm_resource_group.apprg.location
   size                = "Standard_B2s"
   admin_username      = "adminuser"
+  availability_set_id = azurerm_availability_set.aset.id
   network_interface_ids = [
     azurerm_network_interface.nic[count.index].id,
   ]
@@ -63,5 +64,17 @@ resource "azurerm_linux_virtual_machine" "webvm" {
       "chmod +x ./startup.sh",
       "./startup.sh",
     ]
+    connection {
+      type     = "ssh"
+      user     = "adminuser"
+      private_key = file("~/.ssh/id_rsa")
+      host     = azurerm_public_ip.apppip[count.index].ip_address
+    }
   }
+}
+resource "azurerm_availability_set" "aset" {
+  name                = "tf-aset"
+  location            = azurerm_resource_group.apprg.location
+  resource_group_name = azurerm_resource_group.apprg.name
+
 }
