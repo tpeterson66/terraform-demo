@@ -35,6 +35,6 @@ resource "azurerm_lb_rule" "lb-rule" {
 resource "azurerm_network_interface_backend_address_pool_association" "backend_pool" {
   count = var.server_count
   network_interface_id    = azurerm_network_interface.nic[count.index].id
-  ip_configuration_name   = "${var.name}${(count.index + 1)}-nic"
+  ip_configuration_name   = "ipconfig"
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
 }
