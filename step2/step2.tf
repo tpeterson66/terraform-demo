@@ -78,3 +78,6 @@ resource "azurerm_availability_set" "aset" {
   resource_group_name = azurerm_resource_group.apprg.name
 
 }
+output "VirtualMachine_IP_Address" {
+  value = ["${azurerm_public_ip.apppip.*.ip_address}"]
+}
